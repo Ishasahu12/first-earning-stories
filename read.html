@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Read Stories - First Earning Stories</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #2B2B2B;
+      --text: #FFFFFF;
+      --accent: #FFF378;
+      --text-muted: #A1A1AA;
+      --border: #3A3A3A;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: linear-gradient(180deg, var(--bg) 0%, transparent 100%);
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-link {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--text);
+    }
+
+    /* Background */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .gradient-base {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(255, 243, 120, 0.06) 0%, transparent 50%);
+    }
+
+    .fragments {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .fragment {
+      position: absolute;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--text);
+      white-space: nowrap;
+      transition: opacity 0.5s ease;
+      opacity: 0.25;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Main content */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 6rem 1.5rem 2rem;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Filters */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .filter-btn {
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(8px);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+    }
+
+    /* Stories Grid */
+    .stories {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* Story Card */
+    .story-card {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 250ms ease;
+    }
+
+    .story-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 243, 120, 0.2);
+    }
+
+    .story-preview {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+    }
+
+    .story-meta {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-tag {
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+
+    .meta-tag.emotion {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* Write CTA */
+    .write-cta {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2rem;
+    }
+
+    .write-cta p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .btn-write {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bg);
+      padding: 14px 32px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+
+    .btn-write:hover {
+      box-shadow: 0 8px 30px rgba(255, 243, 120, 0.25);
+      transform: translateY(-2px);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-close {
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      float: right;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header {
+        padding: 1rem;
+      }
+
+      .hero h1 {
+        font-size: 1.75rem;
+      }
+
+      .stories {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <span class="logo" onclick="navigateTo('index')">First Earning</span>
+    <nav class="nav-links">
+      <span class="nav-link active">Read</span>
+      <span class="nav-link" onclick="navigateTo('write')">Write</span>
+    </nav>
+  </header>
+
+  <div class="background">
+    <div class="gradient-base"></div>
+    <div class="fragments" id="fragments"></div>
+  </div>
+
+  <main class="page">
+    <section class="hero">
+      <h1>Stories from the beginning</h1>
+      <p>Discover how others started their first earning journey. Every story is a beginning worth sharing.</p>
+    </section>
+
+    <section class="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="proud">Proud</button>
+      <button class="filter-btn" data-filter="happy">Happy</button>
+      <button class="filter-btn" data-filter="confusing">Confusing</button>
+      <button class="filter-btn" data-filter="mixed">Mixed</button>
+    </section>
+
+    <section class="stories" id="storiesGrid">
+      <!-- Stories will be rendered by JS -->
+    </section>
+
+    <section class="write-cta">
+      <p>Your story matters too.</p>
+      <a class="btn-write" onclick="navigateTo('write')">Share your story</a>
+    </section>
+  </main>
+
+  <!-- Story Modal -->
+  <div class="modal" id="storyModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">×</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    // Sample stories data
+    const stories = [
+      {
+        id: 1,
+        preview: "It was just ₹500, but holding that money felt like I had discovered a secret power...",
+        emotion: "proud",
+        type: "Freelance",
+        year: "2019"
+      },
+      {
+        id: 2,
+        preview: "I remember being confused about why something so small could make me feel so grown up...",
+        emotion: "confusing",
+        type: "Small work",
+        year: "2020"
+      },
+      {
+        id: 3,
+        preview: "That first salary payment hit my account and I just stared at it for five minutes. Pure joy.",
+        emotion: "happy",
+        type: "Job",
+        year: "2021"
+      },
+      {
+        id: 4,
+        preview: "Looking back, it wasn't much - but it changed everything about how I saw myself.",
+        emotion: "mixed",
+        type: "Freelance",
+        year: "2018"
+      },
+      {
+        id: 5,
+        preview: "The weekend tutoring sessions taught me that my time had real value.",
+        emotion: "happy",
+        type: "Small work",
+        year: "2022"
+      },
+      {
+        id: 6,
+        preview: "My first paycheck made me realize I was officially on my own journey.",
+        emotion: "proud",
+        type: "Job",
+        year: "2020"
+      }
+    ];
+
+    // Create floating fragments
+    const fragContainer = document.getElementById('fragments');
+    const positions = [
+      [10, 10], [30, 8], [50, 15], [80, 12], [90, 20],
+      [15, 30], [35, 35], [65, 28], [85, 32],
+      [10, 55], [45, 50], [75, 58], [90, 52],
+      [20, 70], [40, 75], [60, 72], [80, 78], [95, 75],
+      [25, 90], [55, 88], [85, 92]
+    ];
+    const fragments = [
+      "first earning ever...",
+      "that special feeling...",
+      "never forget that day...",
+      "everything changed...",
+      "started something new...",
+      "proud moment...",
+      "big change coming...",
+      "just beginning...",
+      "worth remembering...",
+      "story worth sharing..."
+    ];
+
+    positions.forEach((pos, i) => {
+      const frag = document.createElement('div');
+      frag.className = 'fragment';
+      frag.textContent = fragments[i % fragments.length];
+      frag.style.left = pos[0] + '%';
+      frag.style.top = pos[1] + '%';
+      frag.style.animation = `float ${4 + Math.random() * 4}s ease-in-out infinite`;
+      frag.style.animationDelay = Math.random() * 3 + 's';
+      fragContainer.appendChild(frag);
+    });
+
+    // Render stories
+    function renderStories(filter = 'all') {
+      const grid = document.getElementById('storiesGrid');
+      const filtered = filter === 'all' ? stories : stories.filter(s => s.emotion === filter);
+      
+      grid.innerHTML = filtered.map(story => `
+        <div class="story-card" onclick="openStory(${story.id})">
+          <p class="story-preview">${story.preview}</p>
+          <div class="story-meta">
+            <span class="meta-tag emotion">${story.emotion}</span>
+            <span class="meta-tag">${story.type}</span>
+            <span class="meta-tag">${story.year}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Filter handling
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderStories(btn.dataset.filter);
+      });
+    });
+
+    // Modal functions
+    function openStory(id) {
+      const story = stories.find(s => s.id === id);
+      if (story) {
+        document.getElementById('modalBody').innerHTML = `
+          <h2 style="font-size: 1.5rem; margin-bottom: 1rem; font-family: 'Playfair Display', serif;">${story.preview}</h2>
+          <div class="story-meta" style="margin-bottom: 1.5rem;">
+            <span class="meta-tag emotion">${story.emotion}</span>
+            <span class="meta-tag">${story.type}</span>
+            <span class="meta-tag">${story.year}</span>
+          </div>
+          <p style="color: var(--text-muted); line-height: 1.6;">This is where the full story content would appear. The user wrote about their first earning experience in detail, sharing the emotions, challenges, and lessons learned from that pivotal moment.</p>
+        `;
+        document.getElementById('storyModal').classList.add('active');
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('storyModal').classList.remove('active');
+    }
+
+    // Close modal on background click
+    document.getElementById('storyModal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal')) {
+        closeModal();
+      }
+    });
+
+    // Navigation
+    function navigateTo(page) {
+      window.location.href = page + '.html';
+    }
+
+    // Initial render
+    renderStories();
+  </script>
+</body>
+</html>

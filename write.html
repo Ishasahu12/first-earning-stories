@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write Your Story - First Earning Stories</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #2B2B2B;
+      --text: #FFFFFF;
+      --accent: #FFF378;
+      --accent-glow: rgba(255, 243, 120, 0.4);
+      --text-muted: #A1A1AA;
+      --border: #3A3A3A;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* Background gradient */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: radial-gradient(ellipse at 50% 30%, rgba(255, 243, 120, 0.04) 0%, transparent 50%);
+    }
+
+    /* Page container */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+
+    /* Step transitions */
+    .step {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .step.active {
+      display: flex;
+      animation: stepIn 400ms ease-out forwards;
+    }
+
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Heading */
+    .heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtext {
+      font-size: 1rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    /* Options grid */
+    .options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    /* Option button */
+    .option-btn {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.25rem 1rem;
+      color: var(--text);
+      font-size: 0.95rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+
+    .option-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .option-btn.selected {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      box-shadow: 0 4px 20px rgba(255, 243, 120, 0.2);
+    }
+
+    /* Name suggestions */
+    .name-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+
+    .name-btn {
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1rem;
+      color: var(--text);
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 200ms ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .name-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .name-btn.selected {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+    }
+
+    .name-icon {
+      font-size: 1.5rem;
+    }
+
+    /* Custom name input */
+    .custom-name {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      color: var(--text);
+      font-size: 1rem;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .custom-name::placeholder {
+      color: var(--text-muted);
+    }
+
+    .custom-name:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* See more button */
+    .see-more {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: color 0.2s;
+      margin-top: 0.5rem;
+    }
+
+    .see-more:hover {
+      color: var(--text);
+    }
+
+    /* Continue button */
+    .btn-continue {
+      margin-top: 2rem;
+      padding: 14px 48px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+
+    .btn-continue:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-continue:hover:not(:disabled) {
+      box-shadow: 0 8px 30px rgba(255, 243, 120, 0.25);
+      transform: translateY(-2px);
+    }
+
+    /* Writing step */
+    .step-3 {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    /* Identity header */
+    .identity-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.25rem;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+    }
+
+    .identity-tag {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .identity-tag span {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* Writing area */
+    .writing-area {
+      width: 100%;
+      min-height: 300px;
+    }
+
+    .writing-area textarea {
+      width: 100%;
+      min-height: 300px;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      line-height: 1.8;
+      resize: none;
+    }
+
+    .writing-area textarea::placeholder {
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+    }
+
+    .writing-area textarea:focus {
+      outline: none;
+    }
+
+    /* Hint */
+    .hint {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hint-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .hint-link {
+      font-size: 0.85rem;
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* Share button */
+    .btn-share {
+      margin-top: 2rem;
+      padding: 14px 56px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+
+    .btn-share:hover {
+      box-shadow: 0 8px 30px rgba(255, 243, 120, 0.25);
+      transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .heading {
+        font-size: 1.5rem;
+      }
+
+      .options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .name-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+
+  <div class="page">
+    <!-- Step 1: Category Selection -->
+    <div class="step active" data-step="1">
+      <h1 class="heading">Where did your first earning come from?</h1>
+      <p class="subtext">Choose the category that feels right</p>
+      
+      <div class="options">
+        <button class="option-btn" onclick="selectCategory(this, 'Student')">Student</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Designer')">Designer</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Developer')">Developer</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Freelancer')">Freelancer</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Small business')">Small business</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Other')">Other</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Character Name -->
+    <div class="step" data-step="2">
+      <h1 class="heading">Choose a name for your story</h1>
+      <p class="subtext">Your story can be told through a name too</p>
+      
+      <div class="name-list" id="nameList">
+        <!-- Generated by JS -->
+      </div>
+
+      <button class="see-more" id="seeMore" onclick="showMoreNames()">See more names</button>
+
+      <div style="width: 100%; margin-top: 1rem;">
+        <input type="text" class="custom-name" id="customName" placeholder="Or write your own name" oninput="handleCustomName()">
+      </div>
+
+      <button class="btn-continue" id="continueBtn" onclick="goToStep(3)" disabled>Continue</button>
+    </div>
+
+    <!-- Step 3: Writing -->
+    <div class="step step-3" data-step="3">
+      <div class="identity-header">
+        <span class="identity-tag"><span id="displayName"></span> • <span id="displayCategory"></span></span>
+      </div>
+
+      <div class="writing-area">
+        <textarea id="storyContent" placeholder="Write your first earning story…
+Start from where it began."></textarea>
+      </div>
+
+      <div class="hint">
+        <span class="hint-text">Take your time. There's no rush.</span>
+        <span class="hint-link" onclick="navigateTo('read')">Read others →</span>
+      </div>
+
+      <button class="btn-share" onclick="publishStory()">Share your story</button>
+    </div>
+  </div>
+
+  <script>
+    // Category to names mapping
+    const nameData = {
+      'Student': [
+        { icon: '📓', name: 'Notebook' },
+        { icon: '✏️', name: 'Pencil' },
+        { icon: '📖', name: 'Chapter' },
+        { icon: '🎓', name: 'Grad' },
+        { icon: '📝', name: 'Draft' },
+        { icon: '💡', name: 'Spark' }
+      ],
+      'Designer': [
+        { icon: '🎨', name: 'Pixel' },
+        { icon: '🖼️', name: 'Frame' },
+        { icon: '🎭', name: 'Canvas' },
+        { icon: '✨', name: 'Brush' },
+        { icon: '📐', name: 'Scale' },
+        { icon: '🌈', name: 'Hue' }
+      ],
+      'Developer': [
+        { icon: '💻', name: 'Code' },
+        { icon: '⚙️', name: 'Gear' },
+        { icon: '🔧', name: 'Build' },
+        { icon: '🚀', name: 'Deploy' },
+        { icon: '🐛', name: 'Bug' },
+        { icon: '🔒', name: 'Key' }
+      ],
+      'Freelancer': [
+        { icon: '💼', name: 'Client' },
+        { icon: '📋', name: 'Brief' },
+        { icon: '⏱️', name: 'Clock' },
+        { icon: '💰', name: 'Quote' },
+        { icon: '🤝', name: 'Deal' },
+        { icon: '📧', name: 'Pitch' }
+      ],
+      'Small business': [
+        { icon: '🏪', name: 'Shop' },
+        { icon: '📦', name: 'Parcel' },
+        { icon: '🏷️', name: 'Tag' },
+        { icon: '🛒', name: 'Cart' },
+        { icon: '💵', name: 'Register' },
+        { icon: '🔔', name: 'Bell' }
+      ],
+      'Other': [
+        { icon: '🌟', name: 'Star' },
+        { icon: '💫', name: 'Trail' },
+        { icon: '🔥', name: 'Spark' },
+        { icon: '🌱', name: 'Seed' },
+        { icon: '🛤️', name: 'Track' },
+        { icon: '🎯', name: 'Focus' }
+      ]
+    };
+
+    let selectedCategory = '';
+    let selectedName = '';
+    let customNameUsed = false;
+
+    // Get saved state
+    const savedState = sessionStorage.getItem('firstEarningState');
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      if (state.category) {
+        selectedCategory = state.category;
+        selectedName = state.characterName || '';
+        document.getElementById('displayCategory').textContent = selectedCategory;
+        document.getElementById('displayName').textContent = selectedName;
+      }
+    }
+
+    function selectCategory(btn, category) {
+      document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedCategory = category;
+      
+      setTimeout(() => goToStep(2), 300);
+    }
+
+    function renderNames(category) {
+      const nameList = document.getElementById('nameList');
+      const names = nameData[category] || nameData['Other'];
+      
+      nameList.innerHTML = names.map(n => `
+        <button class="name-btn" onclick="selectName(this, '${n.name}')">
+          <span class="name-icon">${n.icon}</span>
+          <span>${n.name}</span>
+        </button>
+      `).join('');
+    }
+
+    function selectName(btn, name) {
+      document.querySelectorAll('.name-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedName = name;
+      customNameUsed = false;
+      document.getElementById('customName').value = '';
+      document.getElementById('continueBtn').disabled = false;
+    }
+
+    function handleCustomName() {
+      const value = document.getElementById('customName').value.trim();
+      if (value) {
+        selectedName = value;
+        customNameUsed = true;
+        document.querySelectorAll('.name-btn').forEach(b => b.classList.remove('selected'));
+        document.getElementById('continueBtn').disabled = false;
+      }
+    }
+
+    function showMoreNames() {
+      const nameList = document.getElementById('nameList');
+      const moreNames = [
+        { icon: '✨', name: 'Dream' },
+        { icon: '🌟', name: 'Light' },
+        { icon: '💫', name: 'Path' },
+        { icon: '🎯', name: 'Aim' }
+      ];
+      
+      moreNames.forEach(n => {
+        const btn = document.createElement('button');
+        btn.className = 'name-btn';
+        btn.innerHTML = `<span class="name-icon">${n.icon}</span><span>${n.name}</span>`;
+        btn.onclick = function() { selectName(this, n.name); };
+        nameList.appendChild(btn);
+      });
+      
+      document.getElementById('seeMore').style.display = 'none';
+    }
+
+    function goToStep(stepNum) {
+      const currentEl = document.querySelector('.step.active');
+      currentEl.classList.remove('active');
+      
+      setTimeout(() => {
+        if (stepNum === 2 && selectedCategory) {
+          renderNames(selectedCategory);
+        } else if (stepNum === 3) {
+          document.getElementById('displayCategory').textContent = selectedCategory;
+          document.getElementById('displayName').textContent = selectedName;
+        }
+        
+        const nextEl = document.querySelector(`.step[data-step="${stepNum}"]`);
+        nextEl.classList.add('active');
+      }, 300);
+    }
+
+    function publishStory() {
+      const content = document.getElementById('storyContent').value.trim();
+      
+      if (!content) {
+        alert('Please write your story before sharing.');
+        return;
+      }
+      
+      const story = {
+        id: Date.now(),
+        category: selectedCategory,
+        characterName: selectedName,
+        story: content,
+        date: new Date().toISOString(),
+        emotion: 'shared'
+      };
+      
+      sessionStorage.setItem('firstEarningState', JSON.stringify(story));
+      navigateTo('read');
+    }
+
+    function navigateTo(page) {
+      window.location.href = page + '.html';
+    }
+  </script>
+</body>
+</html>
