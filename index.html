@@ -9,12 +9,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #F7F3EF;
-      --primary: #E6A96B;
-      --secondary: #D8A7A7;
-      --support: #A8BFA3;
-      --text: #2E2E2E;
-      --highlight: #F3D7B6;
+      --bg-deep: #2B2B2B;
+      --bg-surface: #1F1F1F;
+      --text: #F5F5F5;
+      --text-muted: #A1A1AA;
+      --accent: #FFF6BC;
+      --accent-glow: rgba(255, 246, 188, 0.4);
+      --border: #3A3A3A;
     }
 
     * {
@@ -28,28 +29,34 @@
       height: 100vh;
       overflow: hidden;
       font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
+      background: #2B2B2B;
       color: var(--text);
+      cursor: none;
     }
 
-    body {
-      background: 
-        radial-gradient(ellipse at 20% 80%, rgba(230, 169, 107, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(216, 167, 167, 0.08) 0%, transparent 50%),
-        linear-gradient(180deg, #F7F3EF 0%, #F5F1EC 100%);
-    }
-
-    .container {
+    .page {
       width: 100%;
       height: 100%;
+      position: relative;
+      background: #2B2B2B;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      z-index: 10;
     }
 
-    .step-container {
+    .gradient-base {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(255, 246, 188, 0.05) 0%, transparent 50%);
+      z-index: 1;
+    }
+
+    .content {
+      position: relative;
+      z-index: 10;
       text-align: center;
       max-width: 520px;
       padding: 2rem;
@@ -59,436 +66,363 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      gap: 2.5rem;
-      animation: fadeSlideIn 400ms ease-out forwards;
     }
 
     .step.active {
       display: flex;
+      animation: stepIn 300ms ease-out forwards;
     }
 
-    @keyframes fadeSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .step.exit {
+      animation: stepOut 250ms ease-in forwards;
     }
 
-    .question {
+    @keyframes stepIn {
+      0% { opacity: 0; transform: translateY(16px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes stepOut {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-16px); }
+    }
+
+    .heading {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 2.25rem;
+      font-size: 2.3rem;
       font-weight: 500;
-      line-height: 1.3;
-      color: var(--text);
+      line-height: 1.28;
+      margin-bottom: 1rem;
       letter-spacing: -0.02em;
+    }
+
+    .heading .highlight {
+      color: var(--accent);
+    }
+
+    .subtext {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 2.2rem;
+      line-height: 1.6;
     }
 
     .buttons {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
       gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .btn {
       font-family: 'Inter', system-ui, sans-serif;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 500;
-      padding: 0.875rem 1.75rem;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
+      padding: 14px 26px;
+      border-radius: 999px;
+      cursor: none;
       transition: all 200ms ease-out;
-      background: white;
-      color: var(--text);
-      box-shadow: 0 2px 8px rgba(46, 46, 46, 0.06);
     }
 
     .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(46, 46, 46, 0.1);
+      transform: scale(1.03);
+      filter: brightness(1.05);
     }
 
     .btn:active {
-      transform: translateY(0) scale(0.98);
+      transform: scale(0.97);
     }
 
-    .btn.primary-btn {
-      background: var(--primary);
-      color: white;
+    .btn-primary {
+      background: #FFF6BC;
+      color: #2B2B2B;
+      border: none;
     }
 
-    .btn.primary-btn:hover {
-      background: #d99a5c;
+    .btn-primary:hover {
+      box-shadow: 0 12px 30px rgba(255, 246, 188, 0.18);
     }
 
-    .btn.secondary-btn {
-      background: var(--secondary);
-      color: white;
-    }
-
-    .btn.secondary-btn:hover {
-      background: #c99696;
-    }
-
-    .btn.support-btn {
-      background: var(--support);
-      color: white;
-    }
-
-    .btn.support-btn:hover {
-      background: #96ac91;
-    }
-
-    .btn.outline-btn {
+    .btn-secondary {
       background: transparent;
-      border: 2px solid var(--primary);
-      color: var(--primary);
+      color: var(--text);
+      border: 1px solid var(--border);
     }
 
-    .btn.outline-btn:hover {
-      background: var(--primary);
-      color: white;
+    .btn-secondary:hover {
+      border-color: #4a4a4a;
     }
 
-    /* Background Elements */
-    .bg-layer {
+    .btn-group-2 {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .btn-group-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.6rem;
+      max-width: 300px;
+    }
+
+    .btn-emotion {
+      background: var(--bg-surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-emotion:nth-child(1) { border-color: #A8BFA3; color: #A8BFA3; }
+    .btn-emotion:nth-child(2) { border-color: #D8A7A7; color: #D8A7A7; }
+    .btn-emotion:nth-child(3) { border-color: #A8BFA3; color: #A8BFA3; }
+    .btn-emotion:nth-child(4) { border-color: #FFF6BC; color: #FFF6BC; }
+
+    .btn-emotion:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .btn-type {
+      background: var(--bg-surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-type:nth-child(1) { border-color: #FFF6BC; color: #FFF6BC; }
+    .btn-type:nth-child(2) { border-color: #D8A7A7; color: #D8A7A7; }
+    .btn-type:nth-child(3) { border-color: #A8BFA3; color: #A8BFA3; }
+
+    .cursor {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      width: 20px;
+      height: 14px;
       pointer-events: none;
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.2;
-      transition: transform 0.8s ease-out;
-    }
-
-    .blob-1 {
-      width: 400px;
-      height: 400px;
-      background: var(--primary);
-      top: 10%;
-      left: -10%;
-    }
-
-    .blob-2 {
-      width: 300px;
-      height: 300px;
-      background: var(--secondary);
-      bottom: 20%;
-      right: -5%;
-    }
-
-    .blob-3 {
-      width: 250px;
-      height: 250px;
-      background: var(--support);
-      top: 60%;
-      left: 20%;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(3deg); }
-    }
-
-    .blob-animate {
-      animation: float 25s ease-in-out infinite;
-    }
-
-    .blob-animate-2 {
-      animation: float 35s ease-in-out infinite reverse;
-    }
-
-    .blob-animate-3 {
-      animation: float 30s ease-in-out infinite;
-    }
-
-    /* Paycheck SVG */
-    .paycheck {
-      position: absolute;
-      bottom: 10%;
-      right: 8%;
-      width: 120px;
-      height: 120px;
-      opacity: 0.15;
-      transition: transform 0.4s ease-out, opacity 0.4s ease-out;
-      z-index: 2;
-    }
-
-    .paycheck svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Particles */
-    .particles {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: var(--text);
-      border-radius: 50%;
-      opacity: 0.12;
-    }
-
-    @keyframes drift {
-      0%, 100% { transform: translateY(0) translateX(0); }
-      25% { transform: translateY(-10px) translateX(5px); }
-      50% { transform: translateY(-5px) translateX(-5px); }
-      75% { transform: translateY(-15px) translateX(3px); }
-    }
-
-    /* Curved journey lines */
-    .journey-line {
-      position: absolute;
-      stroke: var(--text);
-      stroke-width: 1;
-      fill: none;
-      opacity: 0.08;
-      stroke-dasharray: 200;
-      stroke-dashoffset: 200;
-      animation: drawLine 3s ease-out forwards;
-    }
-
-    @keyframes drawLine {
-      to { stroke-dashoffset: 0; }
-    }
-
-    /* Cursor follower */
-    .cursor-trail {
-      position: fixed;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(230, 169, 107, 0.1) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
+      z-index: 1000;
       transform: translate(-50%, -50%);
-      transition: opacity 0.3s;
     }
 
-    /* Responsive */
-    @media (max-width: 600px) {
-      .question {
-        font-size: 1.5rem;
-      }
-
-      .btn {
-        font-size: 0.9rem;
-        padding: 0.75rem 1.25rem;
-      }
-
-      .step-container {
-        padding: 1.5rem;
-        gap: 1.5rem;
-      }
-
-      .paycheck {
-        width: 80px;
-        height: 80px;
-        bottom: 5%;
-        right: 5%;
-      }
-
-      .blob {
-        opacity: 0.12;
-      }
+    .cursor svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 4px var(--accent-glow)) drop-shadow(0 0 10px rgba(255, 246, 188, 0.3));
+      animation: cursorGlow 2.5s ease-in-out infinite;
     }
 
-    /* Final step styling */
-    .final-step .buttons {
-      gap: 1rem;
+    @keyframes cursorGlow {
+      0%, 100% { filter: drop-shadow(0 0 3px var(--accent-glow)) drop-shadow(0 0 8px rgba(255, 246, 188, 0.25)); }
+      50% { filter: drop-shadow(0 0 6px var(--accent)) drop-shadow(0 0 16px var(--accent-glow)); }
     }
 
-    .final-step .btn {
-      padding: 1rem 2.5rem;
-      font-size: 1.1rem;
+    .cursor.hover {
+      transform: translate(-50%, -50%) scale(1.15);
+    }
+
+    .cursor-ring {
+      position: fixed;
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--accent-glow);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999;
+      transform: translate(-50%, -50%);
+      opacity: 0.25;
+      animation: ringPulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes ringPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
+      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.1; }
+    }
+
+    @media (max-width: 768px) {
+      .content { padding: 2rem 1.5rem; }
+      .heading { font-size: 1.6rem; }
+      .subtext { font-size: 0.9rem; margin-bottom: 1.8rem; }
+      .btn { padding: 12px 20px; font-size: 0.9rem; }
+      .btn-group-4 { max-width: 280px; }
+      .cursor, .cursor-ring { display: none; }
+      html, body { cursor: auto; }
     }
   </style>
 </head>
 <body>
-  <div class="bg-layer">
-    <div class="blob blob-1 blob-animate"></div>
-    <div class="blob blob-2 blob-animate-2"></div>
-    <div class="blob blob-3 blob-animate-3"></div>
+  <div class="page">
+    <div class="gradient-base"></div>
     
-    <div class="particles" id="particles"></div>
-
-    <div class="paycheck" id="paycheck">
-      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="15" y="25" width="70" height="50" rx="4" fill="#2E2E2E" opacity="0.3"/>
-        <rect x="20" y="32" width="60" height="3" fill="#F7F3EF" opacity="0.5"/>
-        <rect x="20" y="40" width="40" height="3" fill="#F7F3EF" opacity="0.5"/>
-        <rect x="20" y="48" width="50" height="3" fill="#F7F3EF" opacity="0.5"/>
-        <circle cx="70" cy="50" r="12" fill="#E6A96B" opacity="0.4"/>
-        <text x="70" y="55" text-anchor="middle" font-size="16" fill="#F7F3EF" font-weight="600">$</text>
+    <div class="cursor" id="cursor">
+      <svg viewBox="0 0 20 14" fill="none">
+        <rect x="2" y="2" width="16" height="10" rx="2" fill="#FFF6BC"/>
       </svg>
     </div>
-  </div>
-
-  <div class="cursor-trail" id="cursorTrail"></div>
-
-  <div class="container">
-    <div class="step-container">
-      <!-- Step 1 -->
+    <div class="cursor-ring" id="cursorRing"></div>
+    
+    <div class="content">
+      
+      <!-- STEP 1: Entry -->
       <div class="step active" data-step="1">
-        <h2 class="question">Do you remember your first earning?</h2>
-        <div class="buttons">
-          <button class="btn primary-btn" onclick="nextStep(2)">Yes, I do</button>
-          <button class="btn secondary-btn" onclick="nextStep(2)">Not really</button>
+        <h1 class="heading">Do you remember your <span class="highlight">first earning</span>?</h1>
+        <p class="subtext">Some moments stay with you. This is one of them.</p>
+        <div class="btn-group-2">
+          <button class="btn btn-primary" onclick="nextStep('A1')">Yes, I do</button>
+          <button class="btn btn-secondary" onclick="nextStep('B1')">Not really</button>
         </div>
       </div>
-
-      <!-- Step 2 -->
-      <div class="step" data-step="2">
-        <h2 class="question">How did it feel?</h2>
-        <div class="buttons">
-          <button class="btn" style="background:#A8BFA3;color:white" onclick="nextStep(3)">Proud</button>
-          <button class="btn" style="background:#D8A7A7;color:white" onclick="nextStep(3)">Confusing</button>
-          <button class="btn support-btn" onclick="nextStep(3)">Happy</button>
-          <button class="btn" style="background:#E6A96B;color:white" onclick="nextStep(3)">Mixed</button>
+      
+      <!-- WRITER PATH: A1 -->
+      <div class="step" data-step="A1">
+        <h1 class="heading">How did it feel?</h1>
+        <p class="subtext">The emotion of that moment</p>
+        <div class="btn-group-4">
+          <button class="btn btn-emotion" onclick="nextStep('A2')">Proud</button>
+          <button class="btn btn-emotion" onclick="nextStep('A2')">Confusing</button>
+          <button class="btn btn-emotion" onclick="nextStep('A2')">Happy</button>
+          <button class="btn btn-emotion" onclick="nextStep('A2')">Mixed</button>
         </div>
       </div>
-
-      <!-- Step 3 -->
-      <div class="step" data-step="3">
-        <h2 class="question">How did you earn it?</h2>
-        <div class="buttons">
-          <button class="btn primary-btn" onclick="nextStep(4)">Job</button>
-          <button class="btn secondary-btn" onclick="nextStep(4)">Freelance</button>
-          <button class="btn support-btn" onclick="nextStep(4)">Small work</button>
-          <button class="btn outline-btn" onclick="nextStep(4)">Something else</button>
+      
+      <!-- WRITER PATH: A2 -->
+      <div class="step" data-step="A2">
+        <h1 class="heading">How did you earn it?</h1>
+        <p class="subtext">The work behind your first dollar</p>
+        <div class="btn-group-4">
+          <button class="btn btn-type" onclick="nextStep('A3')">Job</button>
+          <button class="btn btn-type" onclick="nextStep('A3')">Freelance</button>
+          <button class="btn btn-type" onclick="nextStep('A3')">Small work</button>
+          <button class="btn btn-type" onclick="nextStep('A3')">Something else</button>
         </div>
       </div>
-
-      <!-- Step 4 -->
-      <div class="step final-step" data-step="4">
-        <h2 class="question">Would you like to share it or explore others?</h2>
-        <div class="buttons">
-          <button class="btn primary-btn" onclick="handleAction('write')">Write my story</button>
-          <button class="btn outline-btn" onclick="handleAction('read')">Read stories</button>
+      
+      <!-- WRITER PATH: A3 -->
+      <div class="step" data-step="A3">
+        <h1 class="heading">Would you like to tell your <span class="highlight">story now</span>?</h1>
+        <p class="subtext">Every earning has a beginning worth sharing.</p>
+        <div class="btn-group-2">
+          <button class="btn btn-primary" onclick="finish('write')">Tell my story</button>
+          <button class="btn btn-secondary" onclick="nextStep('A4')">Maybe later</button>
         </div>
       </div>
+      
+      <!-- WRITER PATH: A4 (Maybe later) -->
+      <div class="step" data-step="A4">
+        <h1 class="heading">You can always come back.</h1>
+        <p class="subtext">But reading others might help you remember.</p>
+        <div class="btn-group-2">
+          <button class="btn btn-primary" onclick="finish('read')">Read stories</button>
+          <button class="btn btn-secondary" onclick="goBack()">Go back</button>
+        </div>
+      </div>
+      
+      <!-- READER PATH: B1 -->
+      <div class="step" data-step="B1">
+        <h1 class="heading">That's okay.<br>Sometimes stories help us remember.</h1>
+        <p class="subtext">Would you like to explore how others started?</p>
+        <div class="btn-group-2">
+          <button class="btn btn-primary" onclick="finish('read')">Show me stories</button>
+          <button class="btn btn-secondary" onclick="nextStep('A1')">I'll try anyway</button>
+        </div>
+      </div>
+      
+      <!-- FINAL STATE: Write -->
+      <div class="step" data-step="finish-write">
+        <h1 class="heading">Start your <span class="highlight">story</span>...</h1>
+        <p class="subtext">Write about your first earning moment.</p>
+        <div class="btn-group-2">
+          <button class="btn btn-primary" onclick="restart()">Begin →</button>
+        </div>
+      </div>
+      
+      <!-- FINAL STATE: Read -->
+      <div class="step" data-step="finish-read">
+        <h1 class="heading">Discover <span class="highlight">others' stories</span></h1>
+        <p class="subtext">Read first earning stories from around the world.</p>
+        <div class="btn-group-2">
+          <button class="btn btn-primary" onclick="restart()">Explore →</button>
+        </div>
+      </div>
+      
     </div>
   </div>
 
   <script>
-    function nextStep(stepNum) {
-      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-      const nextStepEl = document.querySelector(`.step[data-step="${stepNum}"]`);
-      if (nextStepEl) {
-        nextStepEl.classList.add('active');
-      }
-    }
-
-    function handleAction(action) {
-      console.log('User action:', action);
-      if (action === 'write') {
-        document.querySelector('.question').textContent = 'Start your story...';
-      } else {
-        document.querySelector('.question').textContent = 'Discover stories...';
-      }
-    }
-
-    // Cursor movement
-    const cursorTrail = document.getElementById('cursorTrail');
-    const paycheck = document.getElementById('paycheck');
-    const blobs = document.querySelectorAll('.blob');
-
+    let path = null;
+    let aHistory = [];
+    
+    // Cursor
     let mouseX = 0, mouseY = 0;
-    let trailX = 0, trailY = 0;
-    let paycheckX = 0, paycheckY = 0;
-    let blobOffsets = [0, 0, 0];
-
+    let cursorX = 0, cursorY = 0;
+    
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    
     document.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      
-      // Update trail position
-      trailX = mouseX;
-      trailY = mouseY;
-      cursorTrail.style.left = trailX + 'px';
-      cursorTrail.style.top = trailY + 'px';
     });
-
-    // Animate elements
-    function animate() {
-      // Paycheck subtle movement toward cursor
-      const rect = paycheck.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+    
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.12;
+      cursorY += (mouseY - cursorY) * 0.12;
+      ringX += (mouseX - ringX) * 0.06;
+      ringY += (mouseY - ringY) * 0.06;
       
-      const dx = (mouseX - centerX) * 0.03;
-      const dy = (mouseY - centerY) * 0.03;
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+      ring.style.left = (mouseX - (mouseX - cursorX) * 0.06) + 'px';
+      ring.style.top = (mouseY - (mouseY - cursorY) * 0.06) + 'px';
       
-      paycheck.style.transform = `translate(${dx}px, ${dy}px) scale(${1 + Math.abs(dx + dy) * 0.001})`;
-      
-      // Blobs react to cursor
-      blobs.forEach((blob, i) => {
-        const blobDx = (mouseX - window.innerWidth / 2) * (0.01 + i * 0.005);
-        const blobDy = (mouseY - window.innerHeight / 2) * (0.01 + i * 0.005);
-        bloboffsets[i] = bloboffsets[i] || 0;
-        bloboffsets[i] += (blobDx - bloboffsets[i]) * 0.02;
-        blob.style.transform = `translate(${bloboffsets[i]}px, ${blobDy * 0.5}px)`;
-      });
-
-requestAnimationFrame(animate);
+      requestAnimationFrame(animateCursor);
     }
-    animate();
-
-    // Generate particles
-    const particlesContainer = document.getElementById('particles');
-    for (let i = 0; i < 12; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-      particle.style.left = Math.random() * 100 + '%';
-      particle.style.top = Math.random() * 100 + '%';
-      particle.style.animation = `drift ${8 + Math.random() * 10}s ease-in-out infinite`;
-      particle.style.animationDelay = Math.random() * 5 + 's';
-      particlesContainer.appendChild(particle);
-    }
-
-    // Idle breathing animation
-    let idleTime = 0;
-    function idleBreathing() {
-      idleTime += 0.01;
-      const scale = 1 + Math.sin(idleTime) * 0.02;
-      cursorTrail.style.transform = `translate(-50%, -50%) scale(${scale})`;
-      requestAnimationFrame(idleBreathing);
-    }
-    idleBreathing();
-
-    // Check for mouse idle
-    let mouseMoving = false;
-    document.addEventListener('mousemove', () => {
-      mouseMoving = true;
-      cursorTrail.style.opacity = '1';
-      clearTimeout(window.idleTimeout);
-      window.idleTimeout = setTimeout(() => {
-        mouseMoving = false;
-        cursorTrail.style.opacity = '0.3';
-      }, 2000);
+    animateCursor();
+    
+    // Button hover for cursor ring
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      btn.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
     });
+    
+    function nextStep(step) {
+      const current = document.querySelector('.step.active');
+      current.classList.add('exit');
+      current.classList.remove('active');
+      
+      setTimeout(() => {
+        current.classList.remove('exit');
+        
+        // Track path
+        if (step.startsWith('A') && !path) path = 'writer';
+        if (step.startsWith('B') && !path) path = 'reader';
+        if (step.startsWith('A')) aHistory.push(step);
+        
+        const next = document.querySelector(`[data-step="${step}"]`);
+        next.classList.add('active');
+      }, 250);
+    }
+    
+    function finish(action) {
+      const current = document.querySelector('.step.active');
+      current.classList.add('exit');
+      current.classList.remove('active');
+      
+      setTimeout(() => {
+        current.classList.remove('exit');
+        
+        const finalStep = action === 'write' ? 'finish-write' : 'finish-read';
+        const next = document.querySelector(`[data-step="${finalStep}"]`);
+        next.classList.add('active');
+      }, 250);
+    }
+    
+    function goBack() {
+      const lastA = aHistory[aHistory.length - 1] || 'A1';
+      aHistory.pop();
+      nextStep(lastA);
+    }
+    
+    function restart() {
+      path = null;
+      aHistory = [];
+      nextStep('1');
+    }
   </script>
 </body>
 </html>
