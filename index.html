@@ -134,8 +134,9 @@
       font-size: 2.4rem;
       font-weight: 500;
       line-height: 1.25;
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
       letter-spacing: -0.02em;
+      text-align: center;
     }
 
     .heading .highlight { color: var(--accent); }
@@ -143,8 +144,10 @@
     .subtext {
       font-size: 1rem;
       color: var(--text-muted);
-      margin-bottom: 2.2rem;
+      margin-bottom: 1.75rem;
       line-height: 1.6;
+      text-align: center;
+      max-width: 420px;
     }
 
     .buttons { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
@@ -305,11 +308,11 @@
 
     /* Responsive - Mobile Large */
     @media (max-width: 768px) {
-      html, body { 
-        cursor: auto; 
+      html, body {
+        cursor: auto;
         overflow: hidden;
       }
-      
+
       .page {
         width: 100%;
         height: 100vh;
@@ -320,12 +323,12 @@
         position: relative;
         overflow: hidden;
       }
-      
+
       .gradient-base,
       .drift-layer {
         opacity: 0.5;
       }
-      
+
       /* Floating text in top/bottom zones */
       .fragments {
         position: absolute;
@@ -335,7 +338,7 @@
         height: 100%;
         pointer-events: none;
       }
-      
+
       /* Show more fragments on mobile - top row */
       .fragment:nth-child(-n+5) {
         top: 5% !important;
@@ -345,7 +348,7 @@
         filter: blur(1px);
         pointer-events: auto;
       }
-      
+
       /* Second row of fragments */
       .fragment:nth-child(n+6):nth-child(-n+9) {
         display: block;
@@ -355,7 +358,7 @@
         filter: blur(1.5px);
         pointer-events: auto;
       }
-      
+
       /* Bottom fragments - more at bottom */
       .fragment:nth-child(n+10):nth-child(-n+14) {
         display: block;
@@ -367,7 +370,7 @@
         filter: blur(1px);
         pointer-events: auto;
       }
-      
+
       /* Last bottom row */
       .fragment:nth-child(n+14):nth-child(-n+17) {
         display: block;
@@ -379,39 +382,15 @@
         filter: blur(1px);
         pointer-events: auto;
       }
-      
-      /* Ensure fragments don't overlap center content */
-      .content {
-        position: relative;
-        z-index: 10;
-        width: 100%;
-        max-width: 320px;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        background: transparent;
-      }
-      
-      .heading {
-        font-size: 1.7rem;
-        line-height: 1.3;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.01em;
-        position: relative;
-        z-index: 10;
-      }
-      
-      .fragment.active { 
-        font-size: 0.7rem; 
-        opacity: 1; 
+
+      .fragment.active {
+        font-size: 0.7rem;
+        opacity: 1;
         filter: blur(0);
         color: #FFF378;
       }
       .fragment.dimmed { opacity: 0.15; }
-      
+
       /* Centered main content - no card */
       .content {
         position: relative;
@@ -429,23 +408,25 @@
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
       }
-      
+
       .heading {
         font-size: 1.7rem;
         line-height: 1.3;
         margin-bottom: 0.5rem;
         letter-spacing: -0.01em;
+        position: relative;
+        z-index: 10;
       }
       .heading .highlight {
         display: inline;
       }
-      
+
       .subtext {
         font-size: 0.85rem;
         margin-bottom: 1.2rem;
         line-height: 1.4;
       }
-      
+
       /* Full width buttons */
       .btn {
         width: 100%;
@@ -455,47 +436,47 @@
         justify-content: center;
         margin-bottom: 10px;
       }
-      
+
       .btn-group-2,
       .btn-group-4 {
         width: 100%;
         flex-direction: column;
         gap: 10px;
       }
-      
+
       .btn-group-2 .btn,
       .btn-group-4 .btn {
         width: 100%;
         margin-bottom: 0;
       }
-      
+
       .btn-group-4 {
         display: flex;
         flex-wrap: wrap;
       }
-      
+
       .btn-group-4 .btn {
         flex: 1 1 calc(50% - 5px);
         min-width: calc(50% - 5px);
       }
-      
+
       .step {
         display: none;
         flex-direction: column;
         align-items: center;
         width: 100%;
       }
-      
+
       .step.active {
         display: flex;
       }
-      
+
       /* Hide custom cursor ring, show mobile indicator */
       .cursor,
       .cursor-ring {
         display: none;
       }
-      
+
       /* Mobile paycheck indicator at bottom center */
       .mobile-cursor {
         display: flex;
@@ -512,18 +493,18 @@
         animation: mobilePulse 3s ease-in-out infinite;
         cursor: pointer;
       }
-      
+
       @keyframes mobilePulse {
-        0%, 100% { 
+        0%, 100% {
           transform: translateX(-50%) translateY(0);
           filter: drop-shadow(0 0 8px rgba(255, 243, 120, 0.25));
         }
-        50% { 
+        50% {
           transform: translateX(-50%) translateY(-6px);
           filter: drop-shadow(0 0 16px rgba(255, 243, 120, 0.4));
         }
       }
-      
+
       .mobile-cursor::after {
         content: '';
         position: absolute;
@@ -535,27 +516,49 @@
       }
     }
 
-    /* Responsive - Mobile Small */
-    @media (max-width: 430px) {
+    /* Responsive - Mobile Medium */
+    @media (max-width: 640px) {
       .content {
+        max-width: 300px;
         padding: 16px;
-        max-width: 280px;
       }
-      
       .heading {
         font-size: 1.5rem;
       }
-      
+      .subtext {
+        font-size: 0.82rem;
+        margin-bottom: 1rem;
+      }
+      .btn {
+        height: 46px;
+        font-size: 0.88rem;
+      }
+    }
+
+    /* Responsive - Mobile Small */
+    @media (max-width: 480px) {
+      .content {
+        max-width: 280px;
+        padding: 14px;
+      }
+      .heading {
+        font-size: 1.35rem;
+        line-height: 1.25;
+        margin-bottom: 0.4rem;
+      }
       .subtext {
         font-size: 0.8rem;
         margin-bottom: 1rem;
+        line-height: 1.35;
       }
-      
       .btn {
-        height: 46px;
+        height: 44px;
         font-size: 0.85rem;
       }
-      
+      .btn-group-4 .btn {
+        flex: 1 1 100%;
+        min-width: 100%;
+      }
       .mobile-cursor {
         width: 32px;
         height: 20px;
@@ -563,11 +566,29 @@
       }
     }
 
+    /* Responsive - Very Small */
+    @media (max-width: 360px) {
+      .content {
+        max-width: 260px;
+        padding: 12px;
+      }
+      .heading {
+        font-size: 1.25rem;
+      }
+      .subtext {
+        font-size: 0.78rem;
+      }
+      .btn {
+        height: 42px;
+        font-size: 0.82rem;
+      }
+    }
+
     /* Mobile cursor visibility */
     @media (max-width: 768px) {
       .mobile-cursor { display: flex !important; }
     }
-    
+
     @media (min-width: 769px) {
       .mobile-cursor { display: none !important; }
     }
@@ -603,27 +624,18 @@
         <h1 class="heading">How did it feel?</h1>
         <p class="subtext">The emotion of that moment</p>
         <div class="btn-group-4">
-          <button class="btn" onclick="selectOption(this); goToStep('A2', 'proud')">Proud</button>
-          <button class="btn" onclick="selectOption(this); goToStep('A2', 'confusing')">Confusing</button>
-          <button class="btn" onclick="selectOption(this); goToStep('A2', 'happy')">Happy</button>
-          <button class="btn" onclick="selectOption(this); goToStep('A2', 'mixed')">Mixed</button>
+          <button class="btn" onclick="selectOption(this); goToStep('A3', 'proud')">Proud</button>
+          <button class="btn" onclick="selectOption(this); goToStep('A3', 'confusing')">Confusing</button>
+          <button class="btn" onclick="selectOption(this); goToStep('A3', 'happy')">Happy</button>
+          <button class="btn" onclick="selectOption(this); goToStep('A3', 'mixed')">Mixed</button>
         </div>
       </div>
       
-      <div class="step" data-step="A2">
-        <h1 class="heading">How did you earn it?</h1>
-        <p class="subtext">The work behind your first earning</p>
-        <div class="btn-group-4">
-          <button class="btn" onclick="selectOption(this); goToStep('A3', 'job')">Job</button>
-          <button class="btn" onclick="selectOption(this); goToStep('A3', 'freelance')">Freelance</button>
-          <button class="btn" onclick="selectOption(this); goToStep('A3', 'small')">Small work</button>
-          <button class="btn" onclick="selectOption(this); goToStep('A3', 'other')">Other</button>
-        </div>
-      </div>
+      <!-- Removed Step A2: "How did you earn it?" -->
       
       <div class="step" data-step="A3">
-        <h1 class="heading">Would you like to <span class="highlight">tell your story</span> now?</h1>
-        <p class="subtext">Your first earning deserves to be remembered.</p>
+        <h1 class="heading">Go ahead, <span class="highlight">share your story</span>.</h1>
+        <p class="subtext">It might help someone build their first earning.</p>
         <div class="btn-group-2">
           <button class="btn" onclick="goToWrite()">Tell my story</button>
           <button class="btn" onclick="goToRead()">Read others</button>
@@ -914,8 +926,9 @@
 
     // Store answers and navigate to write page
     function goToWrite() {
-      window.globalState.emotion = answers['A1_selected'];
-      window.globalState.earningType = answers['A2_answer'];
+      // Get selected emotion from A1 step
+      const selectedBtn = document.querySelector('.step[data-step="A1"] .btn.selected');
+      window.globalState.emotion = selectedBtn ? selectedBtn.textContent : null;
       sessionStorage.setItem('firstEarningState', JSON.stringify(window.globalState));
       navigateTo('write');
     }
