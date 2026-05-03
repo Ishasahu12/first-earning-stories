@@ -1,0 +1,24 @@
+name: Deploy Admin Panel
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'admin/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy Admin Panel
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: first-earning-admin
+          directory: admin
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
