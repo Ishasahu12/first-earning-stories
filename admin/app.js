@@ -1,8 +1,8 @@
 // Admin Panel JavaScript
 // Configuration - Update these after deployment
 const CONFIG = {
-  API_URL: 'https://your-api-url.workers.dev', // Update this after deploying backend
-  ADMIN_PASSWORD: 'admin123', // Change this to your preferred password
+  API_URL: 'https://first-earning-stories-api.your-account.workers.dev', // Will be updated after backend deployment
+  ADMIN_PASSWORD: 'FESadmin2024!', // Admin access password - CHANGE THIS AFTER FIRST LOGIN
   STORIES_PER_PAGE: 10
 };
 
