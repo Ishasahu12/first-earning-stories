@@ -160,6 +160,24 @@ app.get('/api/categories', async (c) => {
   }
 })
 
+// DELETE /api/stories/:id - Delete story
+app.delete('/api/stories/:id', async (c) => {
+  const db = c.env.DB
+  const id = c.req.param('id')
+
+  try {
+    await db.prepare('DELETE FROM stories WHERE id = ?').bind(id).run()
+    
+    return c.json({
+      success: true,
+      message: 'Story deleted successfully'
+    })
+  } catch (error) {
+    console.error('Error deleting story:', error)
+    return c.json({ success: false, error: 'Failed to delete story' }, 500)
+  }
+})
+
 // ==================== STATS ====================
 
 // GET /api/stats - Get platform stats
@@ -170,13 +188,20 @@ app.get('/api/stats', async (c) => {
     const totalStories = await db.prepare('SELECT COUNT(*) as count FROM stories').first()
     const totalViews = await db.prepare('SELECT SUM(views) as total FROM stories').first()
     const categories = await db.prepare('SELECT COUNT(*) as count FROM categories').first()
+    
+    // Get today's stories
+    const today = new Date().toISOString().split('T')[0]
+    const todayStories = await db.prepare(
+      "SELECT COUNT(*) as count FROM stories WHERE DATE(created_at) = ?"
+    ).bind(today).first()
 
     return c.json({
       success: true,
       data: {
         total_stories: totalStories.count,
         total_views: totalViews.total || 0,
-        total_categories: categories.count
+        total_categories: categories.count,
+        today_stories: todayStories.count
       }
     })
   } catch (error) {
