@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write Your Story - First Earning Stories</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Cormorant+Garamond:ital,wght@1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #2B2B2B;
+      --text: #FFFFFF;
+      --accent: #FFF378;
+      --text-muted: #A1A1AA;
+      --border: #3A3A3A;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: radial-gradient(ellipse at 50% 30%, rgba(255, 243, 120, 0.04) 0%, transparent 50%);
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1.5rem;
+    }
+
+    .step {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 520px;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    .step.active {
+      display: flex;
+      animation: stepIn 400ms ease-out forwards;
+    }
+
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .progress-indicator {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      opacity: 0.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtext {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+      width: 100%;
+    }
+
+    .option-btn {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1rem 0.75rem;
+      color: var(--text);
+      font-size: 0.9rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+
+    .option-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .option-btn.selected {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      box-shadow: 0 4px 20px rgba(255, 243, 120, 0.2);
+    }
+
+    .custom-input {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 1rem 1.25rem;
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      color: var(--text);
+      font-size: 0.95rem;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .custom-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .custom-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .name-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .name-chip {
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      padding: 0.65rem 1.25rem;
+      color: var(--text);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+
+    .name-chip:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .name-chip.selected {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+    }
+
+    .see-more {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: color 0.2s;
+    }
+
+    .see-more:hover {
+      color: var(--text);
+    }
+
+    .btn-continue {
+      margin-top: 2.5rem;
+      padding: 14px 48px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: not-allowed;
+      transition: all 200ms ease;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .btn-continue.active {
+      opacity: 1;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .btn-continue.active:hover {
+      box-shadow: 0 8px 30px rgba(255, 243, 120, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .step-3 {
+      max-width: 600px;
+    }
+
+    .identity-header {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .identity-tag {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .identity-tag span {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .writing-area {
+      width: 100%;
+    }
+
+    .writing-area textarea {
+      width: 100%;
+      min-height: 280px;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      resize: none;
+    }
+
+    .writing-area textarea::placeholder {
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .writing-area textarea:focus {
+      outline: none;
+    }
+
+    .writing-step {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .lined-paper {
+      position: relative;
+      width: 100%;
+      min-height: 320px;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 31px,
+        rgba(255,255,255,0.04) 31px,
+        rgba(255,255,255,0.04) 32px
+      );
+      padding: 0 1rem;
+    }
+
+    .writing-area textarea {
+      width: 100%;
+      min-height: 320px;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      line-height: 32px;
+      resize: none;
+      padding: 4px 0;
+    }
+
+    .writing-area textarea::placeholder {
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      opacity: 0.7;
+    }
+
+    .writing-area textarea:focus {
+      outline: none;
+    }
+
+    .progressive-hint {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 1rem;
+      opacity: 0;
+      transition: opacity 600ms ease;
+      min-height: 1.2rem;
+    }
+
+    .progressive-hint.visible {
+      opacity: 1;
+    }
+
+    .hint-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .hint-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .hint-link {
+      font-size: 0.85rem;
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-share {
+      padding: 14px 48px;
+      background: #FFF378;
+      color: #2B2B2B;
+      border: none;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+
+    .btn-share:hover {
+      box-shadow: 0 8px 30px rgba(255, 243, 120, 0.35);
+      transform: scale(1.03);
+    }
+
+    /* Floating memory fragments */
+    .memory-fragments {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      transition: opacity 800ms ease;
+    }
+
+    .memory-fragments.dimmed {
+      opacity: 0.15;
+    }
+
+    .mem-frag {
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.45);
+      white-space: nowrap;
+      filter: blur(1.5px);
+      transition: all 0.3s ease;
+      animation: memFloat 20s ease-in-out infinite;
+      pointer-events: auto;
+      cursor: default;
+    }
+
+    .mem-frag:hover {
+      filter: blur(0px);
+      color: var(--accent);
+      opacity: 1;
+      z-index: 10;
+    }
+
+    @keyframes memFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* Focus mode dimming */
+    .page.writing-focus .background {
+      opacity: 0.3;
+    }
+
+    .cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .read-link {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .read-link:hover {
+      color: var(--text);
+    }
+
+    /* Writing step - natural document flow */
+    .writing-step {
+      min-height: 100vh;
+      max-width: 720px;
+      padding: 0 1.5rem 4rem;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .writing-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 1.25rem 0 0.75rem;
+      text-align: center;
+    }
+
+    .writing-top {
+      text-align: center;
+      margin-bottom: 0.25rem;
+    }
+
+    .writing-header .progress-indicator,
+    .writing-header .identity-tag,
+    .writing-header .writer-position {
+      text-shadow: 0 0 12px rgba(43,43,43,0.8), 0 2px 8px rgba(43,43,43,0.6);
+    }
+
+    .year-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      opacity: 0.55;
+      transition: opacity 200ms ease;
+      margin-bottom: 0.75rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .year-inline:hover {
+      opacity: 0.9;
+    }
+
+    .year-inline label {
+      font-size: 0.78rem;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px dotted rgba(255,255,255,0.15);
+      padding-bottom: 1px;
+    }
+
+    .year-inline select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      border: none;
+      border-bottom: 1px dotted rgba(255,255,255,0.15);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.8rem;
+      padding: 1px 18px 1px 2px;
+      cursor: pointer;
+      transition: border-color 200ms ease, color 200ms ease;
+      background-image: url("data:image/svg+xml,%3Csvg width='8' height='5' viewBox='0 0 8 5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L4 4L7 1' stroke='%23A1A1AA' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 2px center;
+    }
+
+    .year-inline select:hover,
+    .year-inline select:focus {
+      border-bottom-color: rgba(255,255,255,0.25);
+      color: var(--text);
+      outline: none;
+    }
+
+    .year-inline select option {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .lined-paper {
+      width: 100%;
+      padding: 2rem 1rem 1rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .writing-area {
+      position: relative;
+      width: 100%;
+    }
+
+    .writing-area textarea {
+      width: 100%;
+      min-height: 280px;
+      height: auto;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      line-height: 32px;
+      resize: none;
+      padding: 4px 0;
+      overflow: hidden;
+      caret-color: rgba(255, 243, 120, 0.6);
+    }
+
+    .writing-area textarea:focus {
+      outline: none;
+    }
+
+    .writing-prompts {
+      position: absolute;
+      top: 4px;
+      left: 0;
+      pointer-events: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      line-height: 32px;
+      color: var(--text-muted);
+      opacity: 0.35;
+      transition: opacity 400ms ease;
+    }
+
+    .writing-prompts.hidden {
+      opacity: 0;
+    }
+
+    .prompt-line {
+      display: block;
+      height: 32px;
+    }
+
+    /* Bottom section with two rows */
+    .bottom-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      flex-shrink: 0;
+      padding-top: 0.5rem;
+    }
+
+    /* Row 1: Memory hint (optional) */
+    .memory-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    /* Row 2: CTA actions */
+    .cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    /* Compact memory hint */
+    .memory-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .memory-icon {
+      width: 44px;
+      height: 44px;
+      border: 1.5px dashed rgba(255,255,255,0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: all 250ms ease;
+      background: rgba(0,0,0,0.1);
+      flex-shrink: 0;
+    }
+
+    .memory-hint:hover .memory-icon {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px rgba(255,243,120,0.1);
+      background: rgba(255,243,120,0.05);
+    }
+
+    .memory-text {
+      text-align: left;
+    }
+
+    .memory-text .memory-title {
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-bottom: 0.15rem;
+    }
+
+    .memory-text .memory-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .memory-preview-compact {
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .memory-preview-compact.visible {
+      display: flex;
+    }
+
+    .memory-preview-compact img {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid rgba(255,243,120,0.3);
+    }
+
+    .memory-preview-compact .preview-text {
+      font-size: 0.75rem;
+      color: var(--accent);
+    }
+
+    .upload-input {
+      display: none;
+    }
+
+    /* CTA section */
+    .cta-section {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    /* ─── Tablet (<= 1024px) ─── */
+    @media (max-width: 1024px) {
+      .page {
+        padding: 1.5rem;
+      }
+      .heading {
+        font-size: 1.65rem;
+      }
+      .subtext {
+        font-size: 0.9rem;
+      }
+      .options {
+        gap: 0.5rem;
+      }
+      .option-btn {
+        padding: 0.9rem 0.6rem;
+        font-size: 0.88rem;
+      }
+      .custom-input {
+        padding: 0.95rem 1.1rem;
+        font-size: 0.9rem;
+        margin-top: 1.25rem;
+      }
+      .name-chip {
+        padding: 0.6rem 1.1rem;
+        font-size: 0.88rem;
+      }
+      .btn-continue {
+        margin-top: 2rem;
+        padding: 13px 42px;
+        font-size: 0.92rem;
+      }
+    }
+
+    /* ─── Mobile Large (<= 768px) ─── */
+    @media (max-width: 768px) {
+      .page {
+        padding: 1.25rem 1rem;
+      }
+      .step {
+        max-width: 100%;
+      }
+      .heading {
+        font-size: 1.45rem;
+        margin-bottom: 0.5rem;
+      }
+      .subtext {
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
+        padding: 0 0.5rem;
+      }
+      .options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+      }
+      .option-btn {
+        padding: 0.85rem 0.5rem;
+        font-size: 0.85rem;
+        border-radius: 12px;
+      }
+      .custom-input {
+        padding: 0.9rem 1rem;
+        font-size: 0.9rem;
+        margin-top: 1.25rem;
+      }
+      .name-chip {
+        padding: 0.55rem 1rem;
+        font-size: 0.85rem;
+      }
+      .see-more {
+        font-size: 0.8rem;
+      }
+      .btn-continue {
+        margin-top: 2rem;
+        padding: 13px 40px;
+        font-size: 0.9rem;
+      }
+
+      /* Step 3: Writing */
+      .writing-step {
+        padding: 0 1rem 3rem;
+        min-height: 100vh;
+      }
+      .writing-header {
+        padding: 1rem 0 0.75rem;
+      }
+      .writing-header .progress-indicator,
+      .writing-header .identity-tag,
+      .writing-header .writer-position {
+        text-shadow: 0 0 10px rgba(43,43,43,0.85), 0 2px 6px rgba(43,43,43,0.65);
+      }
+      .year-inline {
+        margin-bottom: 0.6rem;
+        font-size: 0.78rem;
+      }
+      .year-inline label {
+        font-size: 0.75rem;
+      }
+      .year-inline select {
+        font-size: 0.78rem;
+      }
+      .identity-header {
+        margin-bottom: 1rem;
+      }
+      .identity-tag {
+        font-size: 0.8rem;
+      }
+      .writer-position {
+        font-size: 0.8rem;
+      }
+      .lined-paper {
+        padding: 1.5rem 0.75rem 0.75rem;
+      }
+      .writing-area textarea {
+        min-height: 220px;
+        font-size: 1rem;
+        line-height: 28px;
+      }
+      .writing-prompts {
+        font-size: 1rem;
+        line-height: 28px;
+      }
+      .prompt-line {
+        height: 28px;
+      }
+      .bottom-section {
+        gap: 1rem;
+        padding-top: 0.25rem;
+      }
+      .memory-hint {
+        gap: 0.6rem;
+      }
+      .memory-icon {
+        width: 40px;
+        height: 40px;
+      }
+      .memory-text .memory-title {
+        font-size: 0.8rem;
+      }
+      .memory-text .memory-sub {
+        font-size: 0.7rem;
+      }
+      .cta-row {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .btn-share {
+        padding: 13px 36px;
+        font-size: 0.9rem;
+        width: 100%;
+        max-width: 280px;
+      }
+      .read-link {
+        font-size: 0.8rem;
+      }
+
+      /* Memory fragments */
+      .mem-frag {
+        font-size: 0.65rem;
+        opacity: 0.25;
+      }
+    }
+
+    /* ─── Mobile Medium (<= 640px) ─── */
+    @media (max-width: 640px) {
+      .heading {
+        font-size: 1.3rem;
+      }
+      .subtext {
+        font-size: 0.82rem;
+      }
+      .options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.45rem;
+      }
+      .option-btn {
+        padding: 0.8rem 0.4rem;
+        font-size: 0.82rem;
+      }
+      .name-chips {
+        gap: 0.4rem;
+      }
+      .name-chip {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.82rem;
+      }
+      .writing-step {
+        padding: 0 0.75rem 2.5rem;
+      }
+      .writing-header {
+        padding: 0.9rem 0 0.6rem;
+      }
+      .year-inline {
+        margin-bottom: 0.5rem;
+      }
+      .lined-paper {
+        padding: 1.25rem 0.5rem 0.5rem;
+      }
+      .writing-area textarea {
+        min-height: 180px;
+        font-size: 0.95rem;
+        line-height: 26px;
+      }
+      .writing-prompts {
+        font-size: 0.95rem;
+        line-height: 26px;
+      }
+      .prompt-line {
+        height: 26px;
+      }
+    }
+
+    /* ─── Mobile Small (<= 480px) ─── */
+    @media (max-width: 480px) {
+      .page {
+        padding: 1rem 0.75rem;
+      }
+      .heading {
+        font-size: 1.2rem;
+        letter-spacing: -0.01em;
+      }
+      .subtext {
+        font-size: 0.8rem;
+        margin-bottom: 1.25rem;
+      }
+      .options {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.4rem;
+      }
+      .option-btn {
+        padding: 0.75rem 0.35rem;
+        font-size: 0.8rem;
+        border-radius: 10px;
+      }
+      .custom-input {
+        padding: 0.8rem 0.9rem;
+        font-size: 0.85rem;
+      }
+      .name-chip {
+        padding: 0.45rem 0.8rem;
+        font-size: 0.8rem;
+      }
+      .btn-continue {
+        padding: 12px 36px;
+        font-size: 0.88rem;
+      }
+      .progress-indicator {
+        font-size: 0.7rem;
+        margin-bottom: 1rem;
+      }
+      .writing-step {
+        padding: 0 0.5rem 2rem;
+      }
+      .writing-header {
+        padding: 0.75rem 0 0.5rem;
+      }
+      .writing-header .progress-indicator,
+      .writing-header .identity-tag,
+      .writing-header .writer-position {
+        text-shadow: 0 0 8px rgba(43,43,43,0.8), 0 1px 4px rgba(43,43,43,0.6);
+      }
+      .year-inline {
+        margin-bottom: 0.5rem;
+        font-size: 0.75rem;
+      }
+      .year-inline label,
+      .year-inline select {
+        font-size: 0.75rem;
+      }
+      .lined-paper {
+        padding: 1rem 0.5rem 0.5rem;
+      }
+      .writing-area textarea {
+        min-height: 160px;
+        font-size: 0.92rem;
+        line-height: 26px;
+      }
+      .writing-prompts {
+        font-size: 0.92rem;
+        line-height: 26px;
+      }
+      .prompt-line {
+        height: 26px;
+      }
+      .bottom-section {
+        gap: 0.75rem;
+      }
+      .memory-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+      }
+      .btn-share {
+        padding: 12px 32px;
+        font-size: 0.88rem;
+      }
+      .read-link {
+        font-size: 0.78rem;
+      }
+      .mem-frag {
+        font-size: 0.6rem;
+        opacity: 0.2;
+      }
+    }
+
+    /* ─── Very Small (<= 360px) ─── */
+    @media (max-width: 360px) {
+      .heading {
+        font-size: 1.1rem;
+      }
+      .subtext {
+        font-size: 0.78rem;
+      }
+      .options {
+        gap: 0.35rem;
+      }
+      .option-btn {
+        padding: 0.7rem 0.3rem;
+        font-size: 0.78rem;
+      }
+      .name-chip {
+        padding: 0.4rem 0.7rem;
+        font-size: 0.78rem;
+      }
+      .btn-continue {
+        padding: 11px 32px;
+        font-size: 0.85rem;
+      }
+      .writing-step {
+        padding: 0 0.4rem 1.5rem;
+      }
+      .writing-header {
+        padding: 0.6rem 0 0.4rem;
+      }
+      .year-inline {
+        font-size: 0.72rem;
+        margin-bottom: 0.4rem;
+      }
+      .lined-paper {
+        padding: 0.75rem 0.4rem 0.4rem;
+      }
+      .writing-area textarea {
+        min-height: 140px;
+        font-size: 0.9rem;
+        line-height: 24px;
+      }
+      .writing-prompts {
+        font-size: 0.9rem;
+        line-height: 24px;
+      }
+      .prompt-line {
+        height: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+
+  <div class="page">
+    <!-- Step 1: Category & Role -->
+    <div class="step active" data-step="1">
+      <span class="progress-indicator">Step 1 of 3</span>
+      <h1 class="heading">What kind of work did you do?</h1>
+<p class="subtext">Pick what feels closest to how you earned it</p>
+      
+      <div class="options" id="categoryGrid" style="grid-template-columns: repeat(3, 1fr);">
+        <button class="option-btn" onclick="selectCategory(this, 'Student')">Student</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Freelance')">Freelance</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Business')">Business</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Tech')">Tech</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Creative')">Creative</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Skilled Work')">Skilled Work</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Teaching')">Teaching</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Vendor')">Vendor</button>
+        <button class="option-btn" onclick="selectCategory(this, 'Physical Work')">Physical Work</button>
+      </div>
+
+      <input type="text" class="custom-input" id="roleInput" placeholder="Or write your role (e.g. tailor, acting, intern…)" oninput="handleRoleInput()">
+      
+      <button class="btn-continue" id="continue1" onclick="goToStep(2)">Continue</button>
+    </div>
+
+    <!-- Step 2: Identity -->
+    <div class="step" data-step="2">
+      <span class="progress-indicator">Step 2 of 3</span>
+      <h1 class="heading">How would you like to be known here?</h1>
+      <p class="subtext">You can use your name, or choose one for this story</p>
+      
+      <div class="name-chips" id="nameChips">
+        <!-- Generated dynamically based on category -->
+      </div>
+
+      <button class="see-more" id="seeMore" onclick="showMoreNames()">Show more options</button>
+
+      <input type="text" class="custom-input" id="nameInput" placeholder="Or write your own name" oninput="handleNameInput()">
+
+      <button class="btn-continue" id="continue2" onclick="goToStep(3)">Continue</button>
+    </div>
+
+    <!-- Floating Memory Fragments -->
+    <div class="memory-fragments" id="memoryFragments">
+      <div class="mem-frag" style="top:12%; left:8%;">I still remember the moment…</div>
+      <div class="mem-frag" style="top:20%; right:10%;">It wasn't much, but it mattered…</div>
+      <div class="mem-frag" style="top:75%; left:6%;">That first earning changed something…</div>
+      <div class="mem-frag" style="top:82%; right:8%;">I didn't expect it to feel like that…</div>
+      <div class="mem-frag" style="top:35%; left:3%;">A small step, a big feeling…</div>
+      <div class="mem-frag" style="top:65%; right:5%;">The day I felt independent…</div>
+    </div>
+
+    <!-- Step 3: Writing -->
+    <div class="step step-3 writing-step" data-step="3">
+      <div class="writing-header">
+        <div class="writing-top">
+          <span class="progress-indicator">Step 3 of 3</span>
+          <div class="identity-header">
+            <span class="identity-tag"><span id="displayName"></span> • <span id="displayCategory"></span></span>
+          </div>
+          <div class="writer-position" id="writerPosition"></div>
+        </div>
+      </div>
+
+      <div class="lined-paper">
+        <div class="year-inline" id="yearInline">
+          <label for="earningYear">First earning year</label>
+          <select id="earningYear">
+            <option value="" selected>add year (optional)</option>
+          </select>
+        </div>
+
+        <div class="writing-area">
+          <div class="writing-prompts" id="writingPrompts">
+            <span class="prompt-line">Start with where it began...</span>
+            <span class="prompt-line">Where were you?</span>
+            <span class="prompt-line">What did it feel like?</span>
+          </div>
+          <textarea id="storyContent" oninput="handleStoryInput()" autofocus></textarea>
+        </div>
+      </div>
+
+      <div class="bottom-section">
+        <div class="memory-row">
+          <div class="memory-hint" id="memoryHint" onclick="document.getElementById('memoryImage').click()">
+            <div class="memory-icon">📎</div>
+            <div class="memory-text">
+              <p class="memory-title">Do you have something from that moment?</p>
+              <p class="memory-sub">Add a memory (optional)</p>
+            </div>
+          </div>
+          <div class="memory-preview-compact" id="memoryPreviewCompact">
+            <img id="previewImgCompact" src="" alt="">
+            <span class="preview-text">Added</span>
+          </div>
+          <input type="file" id="memoryImage" class="upload-input" accept="image/*" onchange="handleImageUpload()">
+        </div>
+
+        <div class="cta-row">
+          <button class="btn-share" id="shareBtn" onclick="publishStory()">Share your story :)</button>
+          <a class="read-link" onclick="navigateTo('read')">Read others →</a>
+        </div>
+      </div>
+      <div class="submission-confirmation" id="submissionConfirmation"></div>
+    </div>
+  </div>
+
+  <script>
+    let selectedCategory = '';
+    let selectedName = '';
+    let selectedYear = '';
+    let customRoleUsed = false;
+    let customNameUsed = false;
+    let namesShown = 6;
+
+    // Populate year dropdown
+    (function populateYears() {
+      const select = document.getElementById('earningYear');
+      if (!select) return;
+      const currentYear = new Date().getFullYear();
+      for (let y = currentYear; y >= 1985; y--) {
+        const opt = document.createElement('option');
+        opt.value = y;
+        opt.textContent = y;
+        select.appendChild(opt);
+      }
+      select.addEventListener('change', (e) => {
+        selectedYear = e.target.value;
+      });
+    })();
+
+    // Dynamic name sets based on category
+    const categoryNames = {
+      'Student': [
+        'First Chapter', 'Blank Page', 'New Start', 'Early Page',
+        'Study Hall', 'Midnight Lamp', 'Dream Seeker', 'Growth Spurt',
+        'Quiet Learner', 'Rising Star', 'Fresh Mind', 'Future Builder'
+      ],
+      'Freelance': [
+        'Solo Flight', 'Own Clock', 'Remote Hand', 'Coffee Desk',
+        'Client Win', 'Flex Hours', 'Project Win', 'Freedom Road',
+        'Independent', 'Digital Nomad', 'Night Owl', 'Creator Mind'
+      ],
+      'Business': [
+        'Shop Keeper', 'Local Win', 'Corner Stone', 'Market Day',
+        'Hand Shake', 'Neighborhood', 'Seed Planter', 'Dream Shop',
+        'Family Run', 'Street Side', 'Humble Start', 'Trade Route'
+      ],
+      'Tech': [
+        'Code Craft', 'Binary Path', 'Digital Builder', 'Algorithm',
+        'Debug Life', 'Startup Mind', 'Silicon Dream', 'Future Tech',
+        'Logic Mind', 'Byte Size', 'Cloud Walker', 'API Connect'
+      ],
+      'Creative': [
+        'Canvas Touch', 'Brush Stroke', 'Color Mix', 'Artisan',
+        'Design Mind', 'Creative Spark', 'Inspiration', 'Visionary',
+        'Maker Space', 'Dream Weaver', 'Palette', 'Original Voice'
+      ],
+      'Skilled Work': [
+        'Maker Hands', 'Thread & Needle', 'Work Bench', 'Artisan Way',
+        'Traditional Craft', 'Heritage Skill', 'Patient Heart', 'Labor Love',
+        'Handmade Day', 'Workshop', 'Old School', 'Soul Creator'
+      ],
+      'Teaching': [
+        'Healing Hands', 'Guide Light', 'Mentor Path', 'Teacher Mind',
+        'Community Soul', 'Helper Way', 'Service Heart', 'Support System',
+        'Patient Heart', 'Nurturer', 'Compassionate', 'Caring Spirit'
+      ],
+      'Vendor': [
+        'Street Side', 'Market Stall', 'Corner Shop', 'Booth Keeper',
+        'Trade Fair', 'Pop Up', 'Store Front', 'Bazaar',
+        'Neighborhood', 'Walk By', 'Everyday Hustle', 'Morning Shift'
+      ],
+      'Physical Work': [
+        'Strong Hands', 'Hard Work', 'Morning Shift', 'Labor Heart',
+        'Steady Hands', 'Working Soul', 'Early Rise', 'Daily Grind',
+        'Muscle Memory', 'Task Complete', 'Day Labor', 'Grit & Will'
+      ]
+    };
+
+    // Fallback names for custom roles
+    const fallbackNames = [
+      'First Step', 'Small Start', 'New Beginning', 'My First Earn',
+      'Quiet Journey', 'Humble Begin', 'Early Bird', 'Dawn Creator',
+      'Pioneer', 'First Trail', 'Spark Maker', 'Origin Story'
+    ];
+
+    const allNames = [...fallbackNames];
+
+    function selectCategory(btn, category) {
+      document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedCategory = category;
+      customRoleUsed = false;
+      document.getElementById('roleInput').value = '';
+      document.getElementById('continue1').classList.add('active');
+      
+      // Generate names for this category
+      renderNamesForCategory(category);
+    }
+
+    function handleRoleInput() {
+      const value = document.getElementById('roleInput').value.trim();
+      if (value) {
+        selectedCategory = value;
+        customRoleUsed = true;
+        document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+        document.getElementById('continue1').classList.add('active');
+        
+        // Use fallback names for custom roles
+        renderNames(fallbackNames);
+      } else {
+        document.getElementById('continue1').classList.remove('active');
+      }
+    }
+
+    function renderNamesForCategory(category) {
+      const names = categoryNames[category] || fallbackNames;
+      renderNames(names);
+    }
+
+    function renderNames(names) {
+      const container = document.getElementById('nameChips');
+      namesShown = 6;
+      const namesToShow = names.slice(0, namesShown);
+      
+      container.innerHTML = namesToShow.map(name => 
+        `<button class="name-chip" onclick="selectName(this, '${name}')">${name}</button>`
+      ).join('');
+
+      // Show/hide see more button
+      document.getElementById('seeMore').style.display = names.length > namesShown ? 'block' : 'none';
+    }
+
+    function selectName(btn, name) {
+      document.querySelectorAll('.name-chip').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedName = name;
+      customNameUsed = false;
+      document.getElementById('nameInput').value = '';
+      document.getElementById('continue2').classList.add('active');
+    }
+
+    function handleNameInput() {
+      const value = document.getElementById('nameInput').value.trim();
+      const btn = document.getElementById('continue2');
+      if (value) {
+        selectedName = value;
+        customNameUsed = true;
+        document.querySelectorAll('.name-chip').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    }
+
+    function showMoreNames() {
+      const container = document.getElementById('nameChips');
+      const currentNames = categoryNames[selectedCategory] || fallbackNames;
+      namesShown += 6;
+      const moreNames = currentNames.slice(0, namesShown);
+      
+      container.innerHTML = moreNames.map(name => 
+        `<button class="name-chip" onclick="selectName(this, '${name}')">${name}</button>`
+      ).join('');
+
+      if (moreNames.length >= currentNames.length) {
+        document.getElementById('seeMore').style.display = 'none';
+      }
+    }
+
+    function goToStep(stepNum) {
+      const currentEl = document.querySelector('.step.active');
+      currentEl.classList.remove('active');
+      
+      setTimeout(() => {
+        if (stepNum === 3) {
+          document.getElementById('displayCategory').textContent = selectedCategory;
+          document.getElementById('displayName').textContent = selectedName;
+          
+          // Show writer position
+          const storyCount = getStoryCount();
+          const position = storyCount + 1;
+          const positionEl = document.getElementById('writerPosition');
+          positionEl.innerHTML = `You are the <span>${ordinal(position)}</span> story here.<br>This one matters.`;
+          
+          // Auto-focus writing area
+          setTimeout(() => {
+            const textarea = document.getElementById('storyContent');
+            if (textarea) {
+              textarea.focus();
+              textarea.setSelectionRange(0, 0);
+            }
+          }, 100);
+        }
+        
+        const nextEl = document.querySelector(`.step[data-step="${stepNum}"]`);
+        nextEl.classList.add('active');
+      }, 300);
+    }
+
+    function getStoryCount() {
+      let count = localStorage.getItem('firstEarningStoryCount');
+      return count ? parseInt(count) : 8; // Start at 8 (we have 8 sample stories)
+    }
+
+    function incrementStoryCount() {
+      const count = getStoryCount();
+      localStorage.setItem('firstEarningStoryCount', count + 1);
+      return count + 1;
+    }
+
+    function ordinal(n) {
+      const s = ['th', 'st', 'nd', 'rd'];
+      const v = n % 100;
+      return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    }
+
+    let uploadedImageData = null;
+
+    function handleImageUpload() {
+      const input = document.getElementById('memoryImage');
+      const preview = document.getElementById('memoryPreviewCompact');
+      const previewImg = document.getElementById('previewImgCompact');
+      const hint = document.getElementById('memoryHint');
+
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          uploadedImageData = e.target.result;
+          previewImg.src = uploadedImageData;
+          preview.classList.add('visible');
+          hint.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function skipImage() {
+      const input = document.getElementById('memoryImage');
+      const preview = document.getElementById('memoryPreviewCompact');
+      const previewImg = document.getElementById('previewImgCompact');
+      const hint = document.getElementById('memoryHint');
+
+      input.value = '';
+      uploadedImageData = null;
+      previewImg.src = '';
+      preview.classList.remove('visible');
+      hint.style.display = 'flex';
+    }
+
+    function publishStory() {
+      const content = document.getElementById('storyContent').value.trim();
+      
+      if (!content) {
+        alert('Please write your story before sharing.');
+        return;
+      }
+      
+      const storyNum = incrementStoryCount();
+      
+      // Show confirmation
+      const confirmation = document.getElementById('submissionConfirmation');
+      const shareBtn = document.getElementById('shareBtn');
+      confirmation.innerHTML = `You were story #${storyNum}.`;
+      confirmation.style.display = 'block';
+      shareBtn.style.display = 'none';
+      
+      // Hide writing elements
+      document.getElementById('writerPosition').style.display = 'none';
+      document.querySelector('.lined-paper').style.opacity = '0.3';
+      document.querySelector('.bottom-section').style.display = 'none';
+      
+      const story = {
+        id: Date.now(),
+        category: selectedCategory,
+        characterName: selectedName,
+        year: selectedYear || null,
+        story: content,
+        date: new Date().toISOString(),
+        emotion: 'shared',
+        storyNumber: storyNum,
+        image: uploadedImageData
+      };
+      
+      sessionStorage.setItem('firstEarningState', JSON.stringify(story));
+      
+      // Navigate after delay
+      setTimeout(() => {
+        navigateTo('read');
+      }, 2000);
+    }
+
+    function handleStoryInput() {
+      const textarea = document.getElementById('storyContent');
+      const fragments = document.getElementById('memoryFragments');
+      const page = document.querySelector('.page');
+      const prompts = document.getElementById('writingPrompts');
+      const text = textarea.value;
+
+      // Auto-grow textarea
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+
+      // Auto-scroll: keep cursor in view as content grows
+      const cursorY = textarea.getBoundingClientRect().top + textarea.scrollHeight;
+      const viewportBottom = window.innerHeight - 120;
+      if (cursorY > viewportBottom) {
+        const scrollTarget = window.scrollY + (cursorY - viewportBottom) + 40;
+        window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+      }
+
+      // Fade prompts when user starts typing
+      if (prompts) {
+        if (text.length > 0) {
+          prompts.classList.add('hidden');
+        } else {
+          prompts.classList.remove('hidden');
+        }
+      }
+
+      // Focus mode: dim background when typing
+      if (text.length > 0) {
+        page.classList.add('writing-focus');
+        fragments.classList.add('dimmed');
+      } else {
+        page.classList.remove('writing-focus');
+        fragments.classList.remove('dimmed');
+      }
+    }
+
+    function navigateTo(page) {
+      window.location.href = page + '.html';
+    }
+  </script>
+</body>
+</html>

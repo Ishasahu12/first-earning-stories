@@ -1,0 +1,19 @@
+{
+  "name": "first-earning-stories-api",
+  "version": "1.0.0",
+  "description": "Backend API for First Earning Stories",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:create": "wrangler d1 create first-earning-stories-db",
+    "db:migrate": "wrangler d1 migrations apply first-earning-stories-db",
+    "db:local": "wrangler d1 execute first-earning-stories-db --local --file=./migrations/0001_initial.sql"
+  },
+  "dependencies": {
+    "hono": "^4.4.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
