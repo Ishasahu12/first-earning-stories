@@ -1,10 +1,29 @@
 // Admin Panel JavaScript
 // Configuration - Update these after deployment
 const CONFIG = {
-  API_URL: 'https://first-earning-stories-api.your-account.workers.dev', // Will be updated after backend deployment
-  ADMIN_PASSWORD: 'FESadmin2024!', // Admin access password - CHANGE THIS AFTER FIRST LOGIN
+  // Backend API URL - UPDATE THIS after deploying backend
+  // Format: https://your-worker-name.your-account.workers.dev
+  API_URL: '', // Leave empty to auto-detect, or paste your backend URL here
+  
+  ADMIN_PASSWORD: 'FESadmin2024!', // CHANGE THIS AFTER FIRST LOGIN
   STORIES_PER_PAGE: 10
 };
+
+// Auto-detect API URL if not configured
+function getApiUrl() {
+  if (CONFIG.API_URL) return CONFIG.API_URL;
+  
+  // Try to infer from current URL
+  const hostname = window.location.hostname;
+  if (hostname.includes('pages.dev')) {
+    // Replace admin Pages URL with backend Worker URL
+    // Example: first-earning-admin.pages.dev → first-earning-stories-api.workers.dev
+    return 'https://first-earning-stories-api.workers.dev';
+  }
+  
+  // Default fallback
+  return 'https://first-earning-stories-api.workers.dev';
+}
 
 // State
 let currentPage = 1;
@@ -62,7 +81,7 @@ async function loadDashboard() {
 
 async function loadStats() {
   try {
-    const response = await fetch(`${CONFIG.API_URL}/api/stats`);
+    const response = await fetch(`${getApiUrl()}/api/stats`);
     const data = await response.json();
     
     if (data.success) {
@@ -83,7 +102,7 @@ async function loadStats() {
 
 async function loadCategories() {
   try {
-    const response = await fetch(`${CONFIG.API_URL}/api/categories`);
+    const response = await fetch(`${getApiUrl()}/api/categories`);
     const data = await response.json();
     
     if (data.success) {
@@ -109,7 +128,7 @@ async function loadStories() {
   `;
 
   try {
-    let url = `${CONFIG.API_URL}/api/stories?limit=${CONFIG.STORIES_PER_PAGE}&offset=${(currentPage - 1) * CONFIG.STORIES_PER_PAGE}`;
+    let url = `${getApiUrl()}/api/stories?limit=${CONFIG.STORIES_PER_PAGE}&offset=${(currentPage - 1) * CONFIG.STORIES_PER_PAGE}`;
     
     if (currentCategory !== 'all') {
       url += `&category=${currentCategory}`;
@@ -284,7 +303,7 @@ async function confirmDelete() {
   if (!storyToDelete) return;
   
   try {
-    const response = await fetch(`${CONFIG.API_URL}/api/stories/${storyToDelete}`, {
+    const response = await fetch(`${getApiUrl()}/api/stories/${storyToDelete}`, {
       method: 'DELETE'
     });
     
